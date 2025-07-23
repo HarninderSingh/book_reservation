@@ -1,0 +1,30 @@
+@model Book_Reservation.Models.Review
+
+@{
+    ViewData["Title"] = "Add Review";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<h2>Add Review</h2>
+<form asp-controller="Review" asp-action="Add" asp-route-bookId="@ViewBag.BookId" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label>Rating (1-5)</label>
+        <input name="Rating" type="number" min="1" max="5" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Comment</label>
+        <textarea name="Comment" class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

@@ -1,0 +1,66 @@
+@model List<Book_Reservation.Models.Book>
+@{
+    ViewData["Title"] = "My Reserved Books";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<header class="navbar">
+    <a href="@Url.Action("Dashboard", "Book")" class="navbar-brand">
+        <img src="@Url.Content("~/images/logo.svg")" alt="Book Reservation Logo" class="navbar-logo">
+        <span class="navbar-title">Book Reservation System</span>
+    </a>
+    <div class="navbar-user">
+        <span class="navbar-username" id="username">@User.Identity?.Name</span>
+        <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+            <button class="navbar-logout" type="submit">Logout</button>
+        </form>
+    </div>
+</header>
+<nav class="nav-tabs">
+    <a href="@Url.Action("Dashboard", "Book")" class="nav-tab active">Home</a>
+    <a href="@Url.Action("Browse", "Book")" class="nav-tab">Reserve Book</a>
+</nav>
+<main class="main-content">
+    <h1 class="page-title">My Reserved Books</h1>
+    <div id="reserved-books">
+        @if (TempData["CancelMessage"] != null)
+        {
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                @TempData["CancelMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-state">
+                <div class="empty-state-icon">📚</div>
+                <div class="empty-state-title">No Reserved Books</div>
+                <div class="empty-state-description">You have no reserved books at the moment.</div>
+            </div>
+        }
+        else
+        {
+            <div class="book-list">
+                @foreach (var book in Model)
+                {
+                    <div class="book-card">
+                        <div class="book-card-img">
+                            <img src="@book.ImageUrl" alt="@book.Title" />
+                        </div>
+                        <div class="book-card-body">
+                            <div class="book-card-title">@book.Title</div>
+                            <div class="book-card-author">by @book.Author</div>
+                            <div class="book-card-description">@book.Genre</div>
+                        </div>
+                        <div class="book-card-actions">
+                            <a href="@Url.Action("Details", "Book", new { id = book.Id })" class="book-card-btn btn btn-primary">View</a>
+                            <a href="@Url.Action("Add", "Review", new { bookId = book.Id })" class="book-card-btn btn btn-secondary">Review</a>
+                            <form asp-action="CancelReservation" asp-route-id="@book.Id" method="post" style="display:inline;">
+                                <button type="submit" class="book-card-btn btn btn-danger">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</main>

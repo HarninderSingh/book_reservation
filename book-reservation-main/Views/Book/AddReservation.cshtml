@@ -1,0 +1,58 @@
+@model Book_Reservation.Models.Book
+
+@{
+    ViewData["Title"] = "Add Book Reservation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Add Book Reservation</h2>
+
+    <form asp-action="AddReservation" method="post">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="Title" class="form-label">Title</label>
+                <input asp-for="Title" class="form-control" required />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Author" class="form-label">Author</label>
+                <input asp-for="Author" class="form-control" required />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Genre" class="form-label">Genre</label>
+                <input asp-for="Genre" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Pages" class="form-label">Pages</label>
+                <input asp-for="Pages" type="number" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Price" class="form-label">Price</label>
+                <input asp-for="Price" type="number" step="0.01" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="ImageUrl" class="form-label">Image URL</label>
+                <input asp-for="ImageUrl" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Edition" class="form-label">Edition</label>
+                <input asp-for="Edition" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Year" class="form-label">Year</label>
+                <input asp-for="Year" type="number" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Publisher" class="form-label">Publisher</label>
+                <input asp-for="Publisher" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="ISBN" class="form-label">ISBN</label>
+                <input asp-for="ISBN" class="form-control" />
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Reservation</button>
+        <a asp-action="Dashboard" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+</div>

@@ -1,0 +1,36 @@
+@model List<Book_Reservation.Models.Review>
+@{
+    ViewData["Title"] = "My Reviews";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="container mt-4">
+    <h2>My Reviews</h2>
+    @foreach (var review in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5>@review.Book.Title</h5>
+                <p>Rating: @review.Rating ⭐</p>
+                <p>@review.Comment</p>
+                <small>Submitted on: @review.SubmittedOn.ToShortDateString()</small>
+                @if ((DateTime.UtcNow - review.SubmittedOn).TotalDays <= 7)
+                {
+                    <div class="mt-2">
+                        <a asp-action="Edit" asp-route-id="@review.Id" class="btn btn-sm btn-warning">Edit</a>
+                        <form asp-action="Delete" asp-route-id="@review.Id" method="post" class="d-inline">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

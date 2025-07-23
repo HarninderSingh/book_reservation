@@ -1,0 +1,36 @@
+@model List<Book_Reservation.Models.Book>
+
+@{
+    ViewData["Title"] = "Reserve a Book";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content">
+    <form method="get" asp-action="Browse" class="search-form">
+        <input type="text" name="title" class="search-input" placeholder="Search by Title" value="@Context.Request.Query["title"]" />
+        <input type="text" name="author" class="search-input" placeholder="Search by Author" value="@Context.Request.Query["author"]" />
+        <input type="text" name="genre" class="search-input" placeholder="Search by Genre" value="@Context.Request.Query["genre"]" />
+        <button type="submit" class="search-button">Search</button>
+    </form>
+    <h2 class="page-title">Available Books to Reserve</h2>
+    <div class="book-list">
+        @foreach (var book in Model)
+        {
+            <div class="book-card">
+                <div class="book-card-img">
+                    <img src="@book.ImageUrl" alt="@book.Title" />
+                </div>
+                <div class="book-card-body">
+                    <div class="book-card-title">@book.Title</div>
+                    <div class="book-card-author">by @book.Author</div>
+                    <div class="book-card-description">@book.Genre</div>
+                    <div class="book-card-description">Edition: @book.Edition</div>
+                </div>
+                <div class="book-card-actions">
+                    <form asp-action="Reserve" asp-route-id="@book.Id" method="post">
+                        <button type="submit" class="book-card-btn btn btn-primary">Reserve</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>
