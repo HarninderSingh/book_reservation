@@ -461,9 +461,24 @@
   
   .book-card-actions {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    gap: 12px;
     margin-top: 15px;
+  }
+  
+  .book-card-actions .book-card-btn,
+  .book-card-actions .btn {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 48px;
+    font-size: 16px;
+    border-radius: 8px;
+    margin-bottom: 0;
+    box-shadow: none;
+  }
+  
+  .book-card-actions form {
+    flex: 1 1 0;
+    margin: 0;
   }
   
   .book-card-btn {

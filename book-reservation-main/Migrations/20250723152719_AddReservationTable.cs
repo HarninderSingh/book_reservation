@@ -5,7 +5,7 @@
 namespace Book_Reservation.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrationName : Migration
+    public partial class AddReservationTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
