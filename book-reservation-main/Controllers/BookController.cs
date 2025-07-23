@@ -34,14 +34,25 @@ namespace Book_Reservation.Controllers
         public IActionResult Reserve(int id)
         {
             var userId = GetUserId();
-            var book = DummyBooks.All.FirstOrDefault(b => b.Id == id);
+            if (!_context.Users.Any(u => u.Id == userId))
+            {
+                TempData["Error"] = "User not found. Please log in again.";
+                return RedirectToAction("Login", "Account");
+            }
+            var book = _context.Books.FirstOrDefault(b => b.Id == id);
             if (book != null)
             {
-                if (!_context.Books.Any(b => b.Title == book.Title && b.Author == book.Author && b.UserId == userId))
+                // Check if already reserved
+                bool alreadyReserved = _context.Reservations.Any(r => r.BookId == id && r.UserId == userId);
+                if (!alreadyReserved)
                 {
-                    book.Id = 0;
-                    book.UserId = userId;
-                    _context.Books.Add(book);
+                    var reservation = new Reservation
+                    {
+                        BookId = id,
+                        UserId = userId,
+                        ReservedAt = DateTime.UtcNow
+                    };
+                    _context.Reservations.Add(reservation);
                     _context.SaveChanges();
                 }
             }
