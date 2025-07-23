@@ -24,8 +24,11 @@ namespace Book_Reservation.Controllers
         public IActionResult Dashboard()
         {
             var userId = GetUserId();
-            var books = _context.Books.Where(b => b.UserId == userId).ToList();
-            return View(books);
+            var reservedBooks = _context.Reservations
+                .Where(r => r.UserId == userId)
+                .Select(r => r.Book)
+                .ToList();
+            return View(reservedBooks);
         }
 
 
@@ -70,12 +73,14 @@ namespace Book_Reservation.Controllers
         [HttpPost("Cancel/{id}")]
         public IActionResult CancelReservation(int id)
         {
-            var book = _context.Books.FirstOrDefault(b => b.Id == id);
-            if (book != null)
+            var userId = GetUserId();
+            var reservation = _context.Reservations.FirstOrDefault(r => r.BookId == id && r.UserId == userId);
+            if (reservation != null)
             {
-                _context.Books.Remove(book);
+                _context.Reservations.Remove(reservation);
                 _context.SaveChanges();
-                TempData["CancelMessage"] = $"Reservation for '{book.Title}' has been canceled.";
+                var book = _context.Books.FirstOrDefault(b => b.Id == id);
+                TempData["CancelMessage"] = $"Reservation for '{book?.Title}' has been canceled.";
             }
             return RedirectToAction("Dashboard");
         }
